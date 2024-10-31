@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Response</title>
+    <style>
+        body {
+            font-family: Monaco, monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        pre {
+            background-color: #252526;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .boolean { color: #569cd6; }
+        .null { color: #d16969; }
+        .key { color: #9cdcfe; }
+        
+        button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #2d2d2d;
+            color: #d4d4d4;
+            border: 1px solid #404040;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        button:hover {
+            background: #3d3d3d;
+            border-color: #505050;
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        /* Add a subtle success animation when copied */
+        @keyframes successPulse {
+            0% { background: #2d2d2d; }
+            50% { background: #2f4f2f; }
+            100% { background: #2d2d2d; }
+        }
+        
+        button.copied {
+            animation: successPulse 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <pre>{{ json_response|safe }}</pre>
+    <button onclick="copyToClipboard()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        Copy
+    </button>
+
+    <script>
+        function copyToClipboard() {
+            const el = document.createElement('textarea');
+            el.value = {{ json_response|safe }};
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const button = document.querySelector('button');
+            button.classList.add('copied');
+            button.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Copied!
+            `;
+            
+            setTimeout(() => {
+                button.classList.remove('copied');
+                button.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy
+                `;
+            }, 2000);
+        }
+
+        document.querySelector('pre').innerHTML = 
+            document.querySelector('pre').innerHTML
+                .replace(/"([^"]+)"/g, '<span class="string">"$1"</span>')
+                .replace(/\b(true|false)\b/g, '<span class="boolean">$1</span>')
+                .replace(/\b(null)\b/g, '<span class="null">$1</span>')
+                .replace(/\b(\d+)\b/g, '<span class="number">$1</span>');
+    </script>
+</body>
+</html>

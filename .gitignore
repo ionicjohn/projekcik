@@ -128,3 +128,8 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+/aplikacja1/migrations/__pycache__
+/project1/__pycache__
+/venv/Lib/site-packages/corsheaders/__pycache__
+/venv
+/aplikacja1/__pycache__
