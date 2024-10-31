@@ -23,11 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8*uz7+ux004rcwp8l_1j%b=3g%bf317m!7wtdrl2=g6@ix4$l6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
+# Update ALLOWED_HOSTS to include localhost
 ALLOWED_HOSTS = [
-    '127.0.0.1'
-    ]
+    '127.0.0.1',
+    'localhost'
+]
 
 
 # Application definition
@@ -57,6 +59,13 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'project1.urls'
 CORS_ALLOW_ALL_ORIGINS = True
 # settings.py
+# Add these CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 TEMPLATES = [
     {
